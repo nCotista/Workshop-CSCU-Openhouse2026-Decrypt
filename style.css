@@ -1,0 +1,42 @@
+body { background-color: #0d0d0d; color: #00ff41; font-family: 'Courier New', Courier, monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+.container { width: 80%; max-width: 600px; border: 2px solid #00ff41; padding: 20px; box-shadow: 0 0 20px rgba(0, 255, 65, 0.2); position: relative; }
+h1 { text-align: center; border-bottom: 1px dashed #00ff41; padding-bottom: 10px; margin-top: 0; }
+.level-indicator { font-size: 0.8em; text-align: right; opacity: 0.7; }
+.challenge-box { margin: 30px 0; text-align: center; }
+.code-display { background: #002200; padding: 15px; font-size: 1.5em; letter-spacing: 2px; margin-bottom: 20px; word-break: break-all; }
+input[type="text"] { background: transparent; border: none; border-bottom: 2px solid #00ff41; color: #00ff41; font-family: inherit; font-size: 1.2em; text-align: center; width: 80%; outline: none; padding: 5px; }
+.btn-group { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+button { background: #00ff41; color: #000; border: none; padding: 10px 20px; font-family: inherit; font-weight: bold; cursor: pointer; transition: 0.2s; }
+button:hover { background: #fff; }
+button.hint-btn { background: transparent; color: #00ff41; border: 1px solid #00ff41; }
+
+.defuse-btn { background: #ff0000; color: white; border: 2px solid #ff0000; animation: pulse 2s infinite; }
+.defuse-btn:hover { background: #cc0000; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); } }
+
+.modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+.modal-content { background: #111; border: 2px solid red; padding: 20px; text-align: center; width: 300px; box-shadow: 0 0 30px red; }
+.numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+.num-btn { background: #333; color: white; padding: 15px; font-size: 1.2em; border: 1px solid #555; }
+.num-btn:active { background: red; }
+#pin-display { font-size: 2em; color: red; background: #000; border: 1px solid red; width: 100%; padding: 10px 0; letter-spacing: 5px; }
+
+#team-modal { display: flex; background: rgba(0,0,0,1); }
+.team-input { border: 2px solid #00ff41 !important; color: #00ff41 !important; font-size: 1.5em !important; margin-bottom: 20px; }
+
+#message { height: 20px; margin-top: 10px; text-align: center; font-weight: bold; }
+.hidden { display: none; }
+.success { color: #ffff00; }
+.error { color: #ff0000; }
+
+#custom-alert { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; backdrop-filter: blur(3px); }
+.alert-box { background: #0a0a0a; border: 2px solid #00ff41; padding: 25px; text-align: center; width: 85%; max-width: 400px; box-shadow: 0 0 20px rgba(0, 255, 65, 0.5); font-family: 'Courier New', Courier, monospace; }
+.alert-box.error-mode { border-color: #ff0000; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+#alert-title { font-size: 1.4em; font-weight: bold; margin-bottom: 15px; letter-spacing: 2px; }
+#alert-msg { font-size: 1em; margin-bottom: 25px; line-height: 1.5; word-wrap: break-word; }
+.alert-box.error-mode #alert-title { color: #ff0000; }
+.alert-box:not(.error-mode) #alert-title { color: #00ff41; }
+.alert-btn { background: transparent; border: 1px solid #00ff41; color: #00ff41; width: 100%; }
+.alert-btn:hover { background: #00ff41; color: #000; }
+.alert-box.error-mode .alert-btn { border-color: #ff0000; color: #ff0000; }
+.alert-box.error-mode .alert-btn:hover { background: #ff0000; color: #fff; }

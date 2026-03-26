@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>THE BOMB MONITOR</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <style>
+        body { background: #000; color: red; font-family: 'Impact', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; overflow: hidden;}
+        #timer { font-size: 25vw; line-height: 1; text-shadow: 0 0 20px red; }
+        #status { font-size: 4vw; color: #fff; margin-top: 10px; text-transform: uppercase; letter-spacing: 5px; }
+        
+        /* เพิ่มสไตล์สำหรับ Leaderboard */
+        #leaderboard { margin-top: 20px; font-size: 3.5vw; color: yellow; text-align: center; text-transform: uppercase; letter-spacing: 3px; }
+        .rank-1 { color: #00ff41; text-shadow: 0 0 20px #00ff41; font-size: 4.5vw; }
+        
+        .defused { color: #00ff41 !important; text-shadow: 0 0 30px #00ff41 !important; }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+    <div id="timer" class="blink">20:00</div>
+    <div id="status">SYSTEM ARMED</div>
+    <div id="leaderboard"></div>
+
+    <script>
+        // --- 1. ใส่ Config Firebase ของคุณ ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBiiCRKoi1YBCbDSrmKmSIwXvCWVLRLzVY",
+            authDomain: "workshop-cscu-oph-2026.firebaseapp.com",
+            databaseURL: "https://workshop-cscu-oph-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "workshop-cscu-oph-2026",
+            storageBucket: "workshop-cscu-oph-2026.firebasestorage.app",
+            messagingSenderId: "42429829940",
+            appId: "1:42429829940:web:290be270c87a4487818b61",
+            measurementId: "G-72QVG6088V"
+        };
+        // ----------------------------------
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let timeLeft = 20 * 60; 
+        let timerInterval;
+        const timerEl = document.getElementById('timer');
+        const statusEl = document.getElementById('status');
+        const leaderboardEl = document.getElementById('leaderboard');
+        let isStopped = false;
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if(isStopped) return;
+                
+                timeLeft--;
+                let m = Math.floor(timeLeft / 60);
+                let s = timeLeft % 60;
+                timerEl.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerEl.innerText = "BOOM";
+                    statusEl.innerText = "SYSTEM DESTROYED";
+                }
+            }, 1000);
+        }
+
+        // เริ่มนับถอยหลัง
+        startTimer();
+
+        // ฟังค่าจาก 'winners_list' (รายชื่อทีมที่ส่งรหัสถูก)
+        db.ref('winners_list').on('value', (snapshot) => {
+            const list = snapshot.val() || [];
+            
+            if (list.length > 0) { 
+                // ถ้ามีคนส่งมาคนแรก ให้หยุดเวลา
+                if (!isStopped) {
+                    isStopped = true;
+                    clearInterval(timerInterval);
+                    timerEl.innerText = "DEFUSED";
+                    timerEl.classList.remove('blink');
+                    timerEl.classList.add('defused');
+                    statusEl.innerText = "BOMB DEFUSED BY:";
+                    statusEl.style.color = "#00ff41";
+                }
+                
+                // แสดงผล Top 3
+                let boardHTML = "";
+                for(let i = 0; i < Math.min(list.length, 3); i++) {
+                    if(i === 0) {
+                        boardHTML += `<div class="rank-1">🥇 1st : ${list[i]}</div>`;
+                    } else if(i === 1) {
+                        boardHTML += `<div>🥈 2nd : ${list[i]}</div>`;
+                    } else if(i === 2) {
+                        boardHTML += `<div>🥉 3rd : ${list[i]}</div>`;
+                    }
+                }
+                leaderboardEl.innerHTML = boardHTML;
+            }
+        });
+
+        // ล้างค่าเก่าตอนเปิดหน้าจอมอนิเตอร์ใหม่ (รีเซ็ตรายชื่อ)
+        db.ref('winners_list').set([]); 
+    </script>
+</body>
+</html>
