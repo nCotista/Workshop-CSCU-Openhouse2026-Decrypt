@@ -1,7 +1,7 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyBiiCRKoi1YBCbDSrmKmSIwXvCWVLRLzVY",
-    authDomain: "workshop-cscu-oph-2026.firebaseapp.com",
-    databaseURL: "https://workshop-cscu-oph-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
+    apiKey: window.ENV.API_KEY,
+    authDomain: window.ENV.AUTH_DOMAIN,
+    databaseURL: window.ENV.DB_URL,
     projectId: "workshop-cscu-oph-2026",
     storageBucket: "workshop-cscu-oph-2026.firebasestorage.app",
     messagingSenderId: "42429829940",
@@ -17,9 +17,24 @@ let currentLevel = 0;
 let pinCode = "";
 
 const levels = [
-    { cipher: "zhduh", answer: "weare", hint: "ไปที่ Colab ด่านที่ 1 นำข้อความนี้ไปใส่ใน cipher1 แล้วลองเปลี่ยนตัวเลข shift_value (ใบ้ให้ว่าเป็นค่าติดลบ)", story: "ด่านที่ 1: นำข้อความที่ถูกล็อคด้วย Caesar Cipher นี้ไปใส่ใน Colab เพื่อถอดรหัส" },
-    { cipher: "Oamjcho", answer: "Mathcom", hint: "ไปที่ Colab ด่านที่ 2 ใส่ข้อความนี้ใน cipher2 และใส่กุญแจ (key2) ที่ได้จากเกมทายภาพ", story: "ด่านที่ 2: รหัสแบบ Vigenère Cipher นำข้อความนี้และ 'กุญแจ' ที่ได้จากภารกิจไปใส่ใน Colab" },
-    { cipher: "Bekkx", answer: "Chula", hint: "ไปที่ Colab ด่านสุดท้าย! ใส่รหัสนี้ใน final_cipher แล้วเอาตัวเลขจากด่าน 1 และกุญแจจากด่าน 2 มากรอก", story: "ด่านที่ 3: ระบบป้องกัน 2 ชั้น! นำรหัสนี้ไปใส่ใน Colab ด่าน FINAL MISSION พร้อมกับข้อมูลที่ได้มา" }
+    { 
+        cipher: "zhduh", 
+        answer: "68b6b89a3ce7b2d3184213194b7082dbfde41921c21988db3825bfd52fdcdb10",
+        hint: "ไปที่ Colab ด่านที่ 1 นำข้อความนี้ไปใส่ใน cipher1 แล้วลองเปลี่ยนตัวเลข shift_value (ใบ้ให้ว่าเป็นค่าติดลบ)", 
+        story: "ด่านที่ 1: นำข้อความที่ถูกล็อคด้วย Caesar Cipher นี้ไปใส่ใน Colab เพื่อถอดรหัส" 
+    },
+    { 
+        cipher: "Oamjcho", 
+        answer: "9059d883145dad31b9356e68608bdb258e86f9e62ddb6583bbf322aa3b6467fc", 
+        hint: "ไปที่ Colab ด่านที่ 2 ใส่ข้อความนี้ใน cipher2 และใส่กุญแจ (key2) ที่ได้จากเกมทายภาพ", 
+        story: "ด่านที่ 2: รหัสแบบ Vigenère Cipher นำข้อความนี้และ 'กุญแจ' ที่ได้จากภารกิจไปใส่ใน Colab" 
+    },
+    { 
+        cipher: "Bekkx", 
+        answer: "70975e0cf0e2d20bfa128dc53a2891ed037a832924feca225736864e4a389edb", 
+        hint: "ไปที่ Colab ด่านสุดท้าย! ใส่รหัสนี้ใน final_cipher แล้วเอาตัวเลขจากด่าน 1 และกุญแจจากด่าน 2 มากรอก", 
+        story: "ด่านที่ 3: ระบบป้องกัน 2 ชั้น! นำรหัสนี้ไปใส่ใน Colab ด่าน FINAL MISSION พร้อมกับข้อมูลที่ได้มา" 
+    }
 ];
 
 function showCustomAlert(title, message, isError = false) {
@@ -67,9 +82,21 @@ function loadLevel() {
     document.getElementById('message').innerText = "";
 }
 
-function checkAnswer() {
+async function hash(text) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(text.toLowerCase()); // normalize
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    return Array.from(new Uint8Array(hashBuffer))
+        .map(b => b.toString(16).padStart(2, "0"))
+        .join("");
+}
+
+async function checkAnswer() {
     const userInput = document.getElementById('answer-input').value.trim();
-    if (userInput.toLowerCase() === levels[currentLevel].answer.toLowerCase()) {
+
+    const hashed = await hash(userInput);
+
+    if (hashed === levels[currentLevel].answer) {
         document.getElementById('message').innerText = "CORRECT";
         document.getElementById('message').className = "success";
         setTimeout(() => { currentLevel++; loadLevel(); }, 1000);
