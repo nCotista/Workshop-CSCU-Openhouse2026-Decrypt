@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operation: BLACKOUT</title>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="custom-alert">
+        <div class="alert-box" id="alert-box">
+            <div id="alert-title">SYSTEM NOTIFICATION</div>
+            <div id="alert-msg">ข้อความแจ้งเตือน</div>
+            <button class="alert-btn" onclick="closeCustomAlert()">[ ACKNOWLEDGE ]</button>
+        </div>
+    </div>
+
+    <div id="team-modal" class="modal">
+        <div class="modal-content" style="border-color: #00ff41; box-shadow: 0 0 30px #00ff41;">
+            <h2 style="color: #00ff41;">IDENTIFY YOURSELF</h2>
+            <p>กรุณาตั้งชื่อทีม (Agent Name)</p>
+            <input type="text" id="team-name-input" class="team-input" placeholder="Team Name..." autocomplete="off">
+            <button onclick="saveTeamName()">START MISSION</button>
+        </div>
+    </div>
+
+    <div class="container hidden" id="game-container">
+        <div class="level-indicator">AGENT: <span id="display-team-name">Unknown</span> | LEVEL <span id="level-num">1</span>/3</div>
+        <h1>Operation: BLACKOUT</h1>
+        
+        <div id="game-content">
+            <p id="story-text">Loading...</p>
+            <div class="challenge-box">
+                <div class="code-display" id="cipher-text">...</div>
+                <input type="text" id="answer-input" placeholder="Answer..." autocomplete="off">
+            </div>
+            <div id="message"></div>
+            <div class="btn-group">
+                <button onclick="checkAnswer()">SUBMIT</button>
+                <button class="hint-btn" onclick="showHint()">HINT</button>
+            </div>
+            <div style="margin-top: 30px; text-align: center;">
+                <button class="defuse-btn" onclick="openDefuseModal()">⚠️ DEFUSE BOMB ⚠️</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="defuse-modal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: red;">ARMED SYSTEM</h2>
+            <div id="pin-display">----</div>
+            <div class="numpad">
+                <button class="num-btn" onclick="addPin('1')">1</button>
+                <button class="num-btn" onclick="addPin('2')">2</button>
+                <button class="num-btn" onclick="addPin('3')">3</button>
+                <button class="num-btn" onclick="addPin('4')">4</button>
+                <button class="num-btn" onclick="addPin('5')">5</button>
+                <button class="num-btn" onclick="addPin('6')">6</button>
+                <button class="num-btn" onclick="addPin('7')">7</button>
+                <button class="num-btn" onclick="addPin('8')">8</button>
+                <button class="num-btn" onclick="addPin('9')">9</button>
+                <button class="num-btn" style="background: #500;" onclick="clearPin()">C</button>
+                <button class="num-btn" onclick="addPin('0')">0</button>
+                <button class="num-btn" style="background: red;" onclick="submitPin()">OK</button>
+            </div>
+            <button onclick="closeDefuseModal()" style="margin-top: 15px; background: transparent; border: 1px solid #555; color: #aaa;">CANCEL</button>
+        </div>
+    </div>
+
+    <div id="victory-screen" class="hidden container" style="text-align: center; border-color: yellow;">
+        <h1 style="color: yellow;">MISSION COMPLETE</h1>
+        <p style="font-size: 1.5em; color: #fff;">RANK: <span id="team-rank-display" style="color: yellow; font-weight: bold; font-size: 1.5em;">-</span></p>
+        <p>Bomb Defused by <span id="winner-name-display" style="font-weight:bold;">YOU</span></p>
+    </div>
+
+    <!-- JS -->
+    <script src="script.js"></script>
+</body>
+</html>
