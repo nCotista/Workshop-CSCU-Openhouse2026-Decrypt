@@ -1,0 +1,26 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create env.js
+        run: |
+          echo "window.ENV = {
+            API_KEY: '${{ secrets.API_KEY }}',
+            AUTH_DOMAIN: '${{ secrets.AUTH_DOMAIN }}',
+            DB_URL: '${{ secrets.DB_URL }}'
+          };" > env.js
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
