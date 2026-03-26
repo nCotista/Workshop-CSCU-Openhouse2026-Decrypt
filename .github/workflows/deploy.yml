@@ -19,6 +19,10 @@ jobs:
             DB_URL: '${{ secrets.DB_URL }}'
           };" > env.js
 
+      # --- เพิ่มขั้นตอนนี้เข้าไปเพื่อปลดล็อคการอัปโหลด ---
+      - name: Remove .gitignore
+        run: rm .gitignore
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
