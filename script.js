@@ -1,7 +1,10 @@
+// ดึงค่าจาก ENV ถ้ามี (บน GitHub Pages) ถ้าไม่มีให้ใช้ Object เปล่ากันโค้ดพัง
+const env = window.ENV || {};
+
 const firebaseConfig = {
-    apiKey: window.ENV.API_KEY,
-    authDomain: window.ENV.AUTH_DOMAIN,
-    databaseURL: window.ENV.DB_URL,
+    apiKey: env.API_KEY || "AIzaSyBiiCRKoi1YBCbDSrmKmSIwXvCWVLRLzVY",
+    authDomain: env.AUTH_DOMAIN || "workshop-cscu-oph-2026.firebaseapp.com",
+    databaseURL: env.DB_URL || "https://workshop-cscu-oph-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
     projectId: "workshop-cscu-oph-2026",
     storageBucket: "workshop-cscu-oph-2026.firebasestorage.app",
     messagingSenderId: "42429829940",

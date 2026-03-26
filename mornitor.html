@@ -23,18 +23,20 @@
     <div id="timer" class="blink">20:00</div>
     <div id="status">SYSTEM ARMED</div>
     <div id="leaderboard"></div>
-
+    
+    <script src="env.js"></script>
     <script>
         // --- 1. ใส่ Config Firebase ของคุณ ---
+        
         const firebaseConfig = {
-            apiKey: "AIzaSyBiiCRKoi1YBCbDSrmKmSIwXvCWVLRLzVY",
-            authDomain: "workshop-cscu-oph-2026.firebaseapp.com",
-            databaseURL: "https://workshop-cscu-oph-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "workshop-cscu-oph-2026",
-            storageBucket: "workshop-cscu-oph-2026.firebasestorage.app",
-            messagingSenderId: "42429829940",
-            appId: "1:42429829940:web:290be270c87a4487818b61",
-            measurementId: "G-72QVG6088V"
+        apiKey: env.API_KEY || "AIzaSyBiiCRKoi1YBCbDSrmKmSIwXvCWVLRLzVY",
+        authDomain: env.AUTH_DOMAIN || "workshop-cscu-oph-2026.firebaseapp.com",
+        databaseURL: env.DB_URL || "https://workshop-cscu-oph-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "workshop-cscu-oph-2026",
+        storageBucket: "workshop-cscu-oph-2026.firebasestorage.app",
+        messagingSenderId: "42429829940",
+        appId: "1:42429829940:web:290be270c87a4487818b61",
+        measurementId: "G-72QVG6088V"
         };
         // ----------------------------------
 
